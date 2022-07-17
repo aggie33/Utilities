@@ -93,7 +93,7 @@ extension Color {
 
 #endif
 
-func ?? <T> (lhs: T?, rhs: @autoclosure () -> Never) -> T {
+public func ?? <T> (lhs: T?, rhs: @autoclosure () -> Never) -> T {
     if let lhs {
         return lhs
     } else {
@@ -138,7 +138,7 @@ public enum Either<First, Second> {
     case first(First)
     case seecond(Second)
     
-    var firstValue: First? {
+    public var firstValue: First? {
         if case let .first(first) = self {
             return first
         } else {
@@ -146,7 +146,7 @@ public enum Either<First, Second> {
         }
     }
     
-    var secondValue: Second? {
+    public var secondValue: Second? {
         if case let .seecond(second) = self {
             return second
         } else {
