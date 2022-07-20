@@ -42,7 +42,7 @@ extension NSObjectProtocol where Self: NSObject {
 
 @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
 @dynamicMemberLookup public struct ViewWrapper<Wrapped: PlatformView>: PlatformViewRepresentable {
-    var view: Wrapped
+    public var view: Wrapped
     
     #if os(macOS)
     public func makeNSView(context: Context) -> Wrapped { view }
@@ -68,6 +68,12 @@ extension NSObjectProtocol where Self: NSObject {
             self.view[keyPath: dynamicMember] = value
             return self
         }
+    }
+    
+    public func finalize() -> some View {
+        let size = view.sizeThatFits(.zero)
+        
+        return self.frame(width: size.width, height: size.height)
     }
 }
 
