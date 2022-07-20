@@ -69,9 +69,16 @@ extension NSObjectProtocol where Self: NSObject {
             return self
         }
     }
-    
+ 
     public func finalize() -> some View {
-        let size = view.sizeThatFits(.zero)
+        let size: CGSize
+        #if os(iOS) || os(tvOS)
+        size = view.sizeThatFits(.zero)
+        #elseif os(macOS)
+        size = view.intrinsicContentSize
+        #elseif os(watchOS)
+        fatalError("Cannot finalize on watchOS")
+        #endif
         
         return self.frame(width: size.width, height: size.height)
     }
