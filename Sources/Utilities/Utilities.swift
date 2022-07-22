@@ -205,13 +205,7 @@ extension Result where Failure == Never {
     }
 }
 
+/// CFGetRetainCount is unreliable so this function may not always be right. Make sure to test for your use-case before using in your project!
 public func isKnownObjCUniquelyReferenced(_ object: NSObject) -> Bool {
-    return object.referenceCount == 1 || CFGetRetainCount(object)
-    == 0b111111111111111111111111111111111111111111111111111111111111 as Int64
-}
-
-extension NSObject {
-    internal var referenceCount: Int {
-        CFGetRetainCount(self) - 2
-    }
+    return CFGetRetainCount(object) == 1 || CFGetRetainCount(object) == 0xfffffffffffffff
 }
