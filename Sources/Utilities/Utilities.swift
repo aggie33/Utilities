@@ -205,3 +205,13 @@ extension Result where Failure == Never {
     }
 }
 
+public func isKnownObjCUniquelyReferenced(_ object: NSObject) -> Bool {
+    return object.referenceCount == 1 || CFGetRetainCount(object)
+    == 0b111111111111111111111111111111111111111111111111111111111111 as Int64
+}
+
+extension NSObject {
+    internal var referenceCount: Int {
+        CFGetRetainCount(self) - 2
+    }
+}
